@@ -1,0 +1,88 @@
+.section-columns .container {
+    padding: 2em;
+}
+
+.section-columns .section-header {
+    text-align: center;
+}
+
+.section-header {
+    font-size: 3em;
+}
+
+.section-columns h3 span {
+    display: block;
+    margin: 1em auto;
+    width: 2ch;
+    height: 3.5px;
+    background: #d01919;
+}
+
+.section-columns .container .section-content article .icons {
+    margin-bottom: 2em;
+}
+
+.section-columns .section-content {
+    display: flex;
+    gap: 2em;
+}
+
+.section-columns .section-content article {
+    flex: 1 1 30%;
+    text-align: center;
+}
+
+.icons {
+    width: 50px;
+    height: auto;
+    margin-left: 15.3em;
+}
+
+.section-features {
+    background-color: white;
+}
+
+.section-features h4 {
+    font-size: 15px;
+    color: #d01919;
+    margin-bottom: 0.75em;
+}
+
+.section-coaches h5 {
+    color: #d01919;
+}
+
+.section-coaches img {
+    border-radius: 5px;
+    width: 60%;
+    margin-left: 7.5em;
+}
+
+p.fitness-description {
+    margin-left: 8.25em;
+    max-width: 34ch;
+}
+
+p.coaches-description {
+    max-width: 32ch;
+    margin-left: 9.15em;
+}
+
+.section-coaches .container .section-content>h4,
+.section-coaches .container .section-content>h5
+.section-coaches .container .section-content>p {
+    margin: 1em;
+}
+
+.section-coaches .container .section-content h4 {
+    font-size: 16px;
+    margin-top: 0.5em;
+}
+
+.section-coaches .container .section-content h5 {
+    font-size: 14px;
+}
+
+.section-coaches .container .section-content p {
+    color: gray;
+}

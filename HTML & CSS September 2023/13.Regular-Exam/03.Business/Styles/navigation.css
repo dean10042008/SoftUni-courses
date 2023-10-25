@@ -1,0 +1,27 @@
+.main-nav ul {
+    display: flex;
+    position: relative;
+    top: 30px;
+    right: -980px;
+}
+
+.main-nav li, .main-nav a {
+    display: block;
+}
+
+.main-nav a {
+    padding: 1em 1em;
+    color: white ;
+} 
+
+.main-nav li a {
+    font-size: 15px;
+    text-decoration: none;
+}
+
+.main-nav p {
+    display: flex;
+    position: relative;
+    top: -30px;
+    right: -30px;
+}

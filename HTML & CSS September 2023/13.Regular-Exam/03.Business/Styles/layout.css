@@ -1,0 +1,157 @@
+body {
+    background-image: url(../images/background.jpg);
+    background-size: cover;
+}
+
+h1 {
+    font-family: "GT Serif", sans-serif;
+}
+
+main {
+    height: 300px;
+}
+
+p img {
+    width: 75px;
+    height: auto;
+}
+
+.container {
+    height: 530px;
+    width: 100%;
+}
+
+main, aside {
+    background-color: white;
+}
+
+main section {
+    margin-left: 80px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    max-width: 37vw;
+}
+
+main section h1 {
+    font-size: 28px;
+    margin: 1em 2em;
+    margin-bottom: 0.5em;
+    font-weight: normal;
+    display: block;
+}
+
+main section p {
+    font-family: "PT Serif", sans-serif;
+    margin: 1em 3.8em;
+    font-size: 13.7px;
+    max-width: 150ch;
+}
+
+main section:nth-child(2) {
+    position: relative;
+    top: -239px;
+    right: -600px;
+}
+
+main section p a {
+    text-decoration: none;
+    padding: 10px;
+    color: #b0825c;
+    border: 2px solid #b0825c;
+    background-color: #fff;
+}
+
+aside {
+    text-align: center;
+}
+
+aside section .media img {
+    max-width: 75px;
+    margin-top: 1em;
+    padding: 0.5em;
+    background-color: lightgray;
+    border-radius: 100%;
+}
+
+.media {
+    display: flex; 
+    justify-content: center; 
+    gap: 2em;
+}
+  
+  
+.media img {
+    max-width: 100%;
+    height: auto;
+}
+
+aside section.sponsors p {
+    position: relative;
+    right: -160px;
+    text-align: center;
+    max-width: 120ch;
+}
+
+aside section.partners {
+    margin: 1em;
+    padding-bottom: 2em;
+}
+
+.gold {
+    font-size: 2em;
+    color: #b0825c;
+    padding: 10px;
+}
+
+footer {
+    background-color: black; 
+    color: #fff; 
+    padding: 20px;
+    display: flex; 
+    flex-direction: column;
+    /* align-items: center;  */
+}
+
+footer div section h4 {
+    font-size: 18px;
+    font-weight: normal;
+    font-family: "PT Serif", sans-serif;
+    padding-bottom: 1em;
+}
+
+footer div section ul {
+    list-style: none;
+}
+
+footer div section ul li {
+    font-size: 15px;
+    padding: 5px 0;
+    color: darkgray;
+    text-transform: uppercase;
+}
+  
+.footer-columns {
+    display: flex; 
+    justify-content: space-between;
+    width: 100%;
+    padding-bottom: 5em;
+}
+  
+footer section {
+    flex: 1;
+    padding: 10px;
+}
+ 
+p.copyright {
+    margin-top: 20px;
+    color: darkgrey;
+}  
+
+hr {
+    width: 100%;
+    height: 2px;
+    color: darkgray;
+}
+  
+  

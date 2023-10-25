@@ -1,0 +1,7 @@
+article {
+    text-decoration: none;
+}
+
+article > code {
+    text-decoration: line-through;
+}

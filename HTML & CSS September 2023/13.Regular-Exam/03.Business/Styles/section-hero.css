@@ -1,0 +1,16 @@
+.section-site-header .container header h1 {
+    font-size: 2em;
+    color: white;
+    position: relative;
+    top: 50px;
+    right: -90px;
+}
+
+.section-site-header .container header p {
+    color: whitesmoke;
+    position: relative;
+    top: 80px;
+    right: -90px;
+    max-width: 60ch;
+
+}
