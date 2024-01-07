@@ -1,3 +1,3 @@
-#My Projects from my courses in SoftUni.bg.
+# My Projects from my courses in SoftUni.bg.
 
-##Free of license.
+## Free of license.
