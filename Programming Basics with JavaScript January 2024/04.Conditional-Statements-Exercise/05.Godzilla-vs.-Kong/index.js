@@ -1,9 +1,3 @@
-// Декорът за филма е на стойност 10% от бюджета. 
-// При повече от 150 статиста,  има отстъпка за облеклото на стойност 10%.
-// Бюджет за филма – реално число в интервала [1.00 … 1000000.00]
-// Брой на статистите – цяло число в интервала [1 … 500]
-// Цена за облекло на един статист – реално число в интервала [1.00 … 1000.00]
-
 function movie(arr) {
     let budget = Number(arr[0]);
     let peopleOnSet = Number(arr[1]);
@@ -17,7 +11,7 @@ function movie(arr) {
 
     let totalMoney = (priceForACostume * peopleOnSet) + decoration;
 
-    if (budget <= totalMoney) {
+    if (budget < totalMoney) {
         let difference = totalMoney - budget;
         console.log('Not enough money!');
         console.log(`Wingard needs ${difference.toFixed(2)} leva more.`);
@@ -29,4 +23,4 @@ function movie(arr) {
     }
 }
 
-movie(['15437.62', '186', '57.99'])
+movie(['15437.62', '186', '57.99']);

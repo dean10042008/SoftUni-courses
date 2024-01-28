@@ -7,7 +7,7 @@ function record(arr) {
     let timeWaterSlow = (Math.floor(distance / 15)) * 12.5;
     let hisBestTime = hisRecord + timeWaterSlow;
 
-    if (hisBestTime > recordTime) {
+    if (hisBestTime >= recordTime) {
         let difference = hisBestTime - recordTime;
         console.log(`No, he failed! He was ${difference.toFixed(2)} seconds slower.`);
     }
@@ -16,4 +16,4 @@ function record(arr) {
     }
 }
 
-record(["55555.67", "3017", "5.03"])
+record(["55555.67", "3017", "5.03"]);

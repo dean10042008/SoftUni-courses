@@ -1,5 +1,5 @@
 function lunch(arr) {
-    let nameOfSerie = String(arr[0]);
+    let nameOfSerie = arr[0];
     let lenghtOfEp = Number(arr[1]);
     let lenghtOfBreak = Number(arr[2]);
 
@@ -9,13 +9,17 @@ function lunch(arr) {
     let timeLeft = lenghtOfBreak - timeToEat - timeToRest;
     
     if (timeLeft >= lenghtOfEp) {
-        let difference = Math.round(timeLeft - lenghtOfEp);
+        let difference = Math.ceil(timeLeft - lenghtOfEp);
         console.log(`You have enough time to watch ${nameOfSerie} and left with ${difference} minutes free time.`);
     }
     else {
-        let difference = Math.round(lenghtOfEp - timeLeft);
+        let difference = Math.ceil(lenghtOfEp - timeLeft);
         console.log(`You don't have enough time to watch ${nameOfSerie}, you need ${difference} more minutes.`);
     }
 }
 
-lunch(["Game of Thrones", "60", "96"])
+lunch(["Game of Thrones", "60", "96"]);
+
+lunch(["Teen Wolf",
+"48",
+"60"])

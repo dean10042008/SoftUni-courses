@@ -6,7 +6,7 @@ function toys(arr) {
     let numOfMinions = Number(arr[4]);
     let numOfTracks = Number(arr[5]);
 
-    let numInTotal = numOfPuzzles + numOfToys + numOfBears + numOfMinions + numOfToys;
+    let numInTotal = numOfPuzzles + numOfToys + numOfBears + numOfMinions + numOfTracks;
     let totalMoney = (numOfPuzzles * 2.60) + (numOfToys * 3) + (numOfBears * 4.10) + (numOfMinions * 8.20) + (numOfTracks * 2);
 
     if (numInTotal >= 50) {
@@ -25,4 +25,4 @@ function toys(arr) {
     }
 }
 
-toys(["320", "8", "2", "5", "5", "1"])
+toys(["320", "8", "2", "5", "5", "1"]);
