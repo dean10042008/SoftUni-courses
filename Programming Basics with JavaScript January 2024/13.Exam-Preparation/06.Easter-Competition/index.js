@@ -1,33 +1,38 @@
 function easterCompetition(input) {
-    let currentLine = 0;
-    function readLine() {
-        return input[currentLine++];
-    }
+    let count = Number(input[0]);
 
-    let count = parseInt(readLine());
-    let bestBakerName = "";
-    let bestBakerPoints = -1;
+    let result = 0;
+    let highestPoints = 0;
+    let nameWithMaxPoints = "";
 
-    for (let i = 0; i < count; i++) {
-        let bakerName = readLine();
-        let points = 0;
-        let command = readLine();
+    let index = 1;
+    let command = input[index];
+
+    for (let i = 1; i <= count; i++) {
+        result = 0;
+
+        let cookName = command;
+        index++;
 
         while (command !== "Stop") {
-            points += parseInt(command);
-            command = readLine();
+            let current = Number(input[index]);
+            result += current;
+
+            index++;
+            command = input[index];
         }
+        console.log(`${cookName} has ${result} points.`);
+        index++;
+        command = input[index];
 
-        console.log(`${bakerName} has ${points} points.`);
-
-        if (points > bestBakerPoints) {
-            bestBakerName = bakerName;
-            bestBakerPoints = points;
-            console.log(`${bakerName} is the new number 1!`);
+        if (result > highestPoints) {
+            highestPoints = result;
+            nameWithMaxPoints = cookName;
+            console.log(`${cookName} is the new number 1!`);
         }
     }
 
-    console.log(`${bestBakerName} won competition with ${bestBakerPoints} points!`);
+    console.log(`${nameWithMaxPoints} won competition with ${highestPoints} points!`);
 }
 
 easterCompetition(["3", "Chef Manchev", "10", "10", "10", "10", "Stop", "Natalie", "8", "2", "9", "Stop", "George", "9", "2", "4", "2", "Stop"]);
