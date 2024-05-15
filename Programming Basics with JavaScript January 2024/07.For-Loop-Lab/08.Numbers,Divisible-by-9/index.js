@@ -7,16 +7,11 @@ function range(input) {
    for (let i = start; i <= end; i++) {
       if (i % 9 === 0) {
          sum += i;
+         console.log(i);
       }
    }
 
    console.log(`The sum: ${sum}`);
-   
-   for (let i = start; i <= end; i++) {
-      if (i % 9 === 0) {
-         console.log(i);
-      }
-   }
 }
 
 range(['100', '200']);
