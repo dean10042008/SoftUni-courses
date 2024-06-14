@@ -2,8 +2,6 @@ function train(arr) {
     let inputTrainArr = arr[0].split(' ').map(Number);
     let maxCapacity = Number(arr[1]);
 
-    let result = [];
-
     let command = '';
 
     for (let i = 2; i < arr.length; i++) {
