@@ -2,9 +2,9 @@ function movies(arr) {
     let result = [];
 
     arr.forEach((command) => {
-        if (command.startsWith("addMovie ")) {
-            const movieName = command.substring(9);
-            result.push({ name: movieName })
+        if (command.includes("addMovie")) {
+            const movieName = command.split("addMovie ")[1];
+            result.push({ name: movieName });
         }
         else if (command.includes(" directedBy ")) {
             const [movieName, director] = command.split(" directedBy ");
