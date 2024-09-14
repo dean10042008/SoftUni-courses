@@ -1,29 +1,11 @@
 function orbit([width, height, x, y]) {
-    let matrix = Array.from({ length: height }, () => Array(width).fill(0));
+    let matrix = Array(height).fill().map(() => Array(width).fill());
 
-    let queue = [[x, y]];
-    matrix[y][x] = 1;
-
-    const directions = [
-        [1, 0], [-1, 0], [0, 1], [0, -1],  // Vertical and horizontal
-        [1, 1], [-1, -1], [1, -1], [-1, 1]  // Diagonal
-    ]
-
-    while (queue.length > 0) {
-        const [curX, curY] = queue.shift();
-
-        for (const [dx, dy] of directions) {
-            const newX = curX + dx;
-            const newY = curY + dy;
-
-            if (newX >= 0 && newX < width && newY >= 0 && newY < height && matrix[newY][newX] === 0) {
-                matrix[newY][newX] = matrix[curY][curX] + 1;
-                queue.push([newX, newY]);
-            }
+    for (let row = 0; row < height; row++) {
+        for (let col = 0; col < width; col++) {
+            matrix[row][col] = Math.max(Math.abs(x - row), Math.abs(y - col)) + 1;
         }
     }
 
-    matrix.forEach(row => console.log(row.join(" ")));
+    console.log(matrix.map(row => row.join(' ')).join('\n'));
 }
-
-orbit([4, 4, 0, 0]);
