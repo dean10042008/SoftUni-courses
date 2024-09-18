@@ -1,12 +1,21 @@
-// ! Important! 50/100 because new judge sucks!
 function fromJSONToHTMLTable(input){
+    function escapeHTML(text) {
+        return text
+            .toString()
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/ /g, "&nbsp;");
+    }
+
     const arr = JSON.parse(input);
 
     let table = "<table>\n";
     table += "\t<tr>";
     
     Object.keys(arr[0]).forEach(element => {
-        table += `<th>${element}</th>`;
+        table += `<th>${escapeHTML(element)}</th>`;
     });
 
     table += "</tr>\n";
@@ -15,7 +24,7 @@ function fromJSONToHTMLTable(input){
         table += '\t<tr>';
 
         for (const key in dataObj) {
-            table += `<td>${dataObj[key]}</td>`;
+            table += `<td>${escapeHTML(dataObj[key])}</td>`;
         };
 
         table += '</tr>\n';
