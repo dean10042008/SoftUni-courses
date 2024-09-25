@@ -1,78 +1,71 @@
-// 0/100 in judge for some reason. works fine otherwise.
 function solve() {
     const [inputEl, resultEl] = document.querySelectorAll('#exercise > textarea');
-    const [genarateButton, buyButton] = document.querySelectorAll('#exercise > button');    
-    let tbody = document.querySelector("table tbody");
+    const [generateButton, buyButton] = document.querySelectorAll('#exercise > button');
+    let tbody = document.querySelector('table tbody');
 
-    genarateButton.addEventListener('click', () => {
-        const input = JSON.parse(inputEl.value);
+    generateButton.addEventListener('click', () => {
+        const furnitureArr = JSON.parse(inputEl.value);
 
-        for (const element of input) {
-            let tr = document.createElement('tr');
-            let td1 = document.createElement('td');
-            let image = document.createElement('img');
-            image.src = element.img;
-            image.alt = "product";
-            td1.appendChild(image);
+        furnitureArr.forEach(furniture => {
+            const tr = document.createElement('tr');
 
-            let td2 = document.createElement('td');
-            let pName = document.createElement('p');
-            pName.textContent = element.name;
-            td2.appendChild(pName);
+            const imgTd = document.createElement('td');
+            const img = document.createElement('img');
+            img.src = furniture.img;
+            imgTd.appendChild(img);
+            tr.appendChild(imgTd);
 
-            let td3 = document.createElement('td');
-            let pPrice = document.createElement('p');
-            pPrice.textContent = element.price;
-            td3.appendChild(pPrice);
+            const nameTd = document.createElement('td');
+            const nameP = document.createElement('p');
+            nameP.textContent = furniture.name;
+            nameTd.appendChild(nameP);
+            tr.appendChild(nameTd);
 
-            let td4 = document.createElement('td');
-            let pDec = document.createElement('p');
-            pDec.textContent = element.decFactor;
-            td4.appendChild(pDec);
+            const priceTd = document.createElement('td');
+            const priceP = document.createElement('p');
+            priceP.textContent = Number(furniture.price);
+            priceTd.appendChild(priceP);
+            tr.appendChild(priceTd);
 
-            let td5 = document.createElement('td');
-            let inputCheckbox = document.createElement('input');
-            inputCheckbox.type = "checkbox";
-            td5.appendChild(inputCheckbox);
+            const decFactorTd = document.createElement('td');
+            const decFactorP = document.createElement('p');
+            decFactorP.textContent = furniture.decFactor;
+            decFactorTd.appendChild(decFactorP);
+            tr.appendChild(decFactorTd);
 
-            tr.appendChild(td1);
-            tr.appendChild(td2);
-            tr.appendChild(td3);
-            tr.appendChild(td4);
-            tr.appendChild(td5);
+            const markTd = document.createElement('td');
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            markTd.appendChild(checkbox);
+            tr.appendChild(markTd);
 
             tbody.appendChild(tr);
-        }
+        });
     });
 
     buyButton.addEventListener('click', () => {
-        let trs = tbody.querySelectorAll('tr');
-
-        let namesArr = [];
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        let boughtItems = [];
         let totalPrice = 0;
-        let decorationFactor = [];
+        let totalDecorationFactor = 0;
 
-        for (const trEl of trs) {
-            let items = trEl.querySelectorAll("td");
-            let checkbox = items[items.length - 1].querySelector("input");
-
+        rows.forEach(row => {
+            const checkbox = row.querySelector('input[type="checkbox"]');
             if (checkbox.checked) {
-                let name = items[1].querySelector("p").textContent;
-                let price = Number(items[2].querySelector("p").textContent);
-                let decFactor = Number(items[3].querySelector("p").textContent);
+                const name = row.querySelector('td:nth-child(2) p').textContent;
+                const price = Number(row.querySelector('td:nth-child(3) p').textContent);
+                const decFactor = Number(row.querySelector('td:nth-child(4) p').textContent);
 
-                namesArr.push(name);
+                boughtItems.push(name);
                 totalPrice += price;
-                decorationFactor.push(decFactor);
+                totalDecorationFactor += decFactor;
             }
-        }
+        });
 
-        let totalDec = 0;
+        const avgDecorationFactor = totalDecorationFactor / boughtItems.length;
 
-        decorationFactor.forEach(num => totalDec += num);
-
-        resultEl.textContent += `Bought furniture: ${namesArr.join(', ')}\n`;
-        resultEl.textContent += `Total price: ${totalPrice.toFixed(2)}\n`;
-        resultEl.textContent += `Average decoration factor: ${totalDec / decorationFactor.length}`;
+        resultEl.value = `Bought furniture: ${boughtItems.join(', ')}\n`;
+        resultEl.value += `Total price: ${totalPrice.toFixed(2)}\n`;
+        resultEl.value += `Average decoration factor: ${avgDecorationFactor}`;
     });
 }
