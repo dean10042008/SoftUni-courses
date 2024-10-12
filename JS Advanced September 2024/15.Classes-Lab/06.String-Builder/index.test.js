@@ -1,5 +1,3 @@
-// TODO: Fix it, cuz judge is bad and grades 88/100
-
 import assert from "assert";
 
 import { StringBuilder } from "./index.js";
@@ -153,6 +151,22 @@ describe("StringBuilder", function() {
             const result = ref.toString();
             const expected = "aaaa";
 
+            assert.deepEqual(result, expected);
+        });
+    });
+
+    describe('Multiple method calls', function () {
+        it('Changes the string correctly', () => {
+            ref = new StringBuilder('llo');
+
+            ref.append('there!&*(');
+            ref.prepend('He');
+            ref.insertAt(' f', 5);
+            ref.remove(12, 4);
+
+            const result = ref.toString();
+            const expected = "Hello fthere";
+            
             assert.deepEqual(result, expected);
         });
     });
