@@ -55,15 +55,10 @@
 let str = 'my string';
 str = str.ensureStart('my');
 str = str.ensureStart('hello ');
-str = str.truncate(16);
-console.log(str);
-str = str.truncate(14);
-console.log(str);
+str = str.truncate(16)
+str = str.truncate(14)
 str = str.truncate(8);
-console.log(str);
 str = str.truncate(4);
-console.log(str);
 str = str.truncate(2);
-console.log(str);
 str = String.format('The {0} {1} fox', 'quick', 'brown');
 str = String.format('jumps {0} {1}', 'dog');
