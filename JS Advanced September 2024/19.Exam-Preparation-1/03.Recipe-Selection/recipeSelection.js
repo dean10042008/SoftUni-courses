@@ -35,4 +35,4 @@ const recipeSelection = {
 };
 
 
-module.exports = recipeSelection;
+export { recipeSelection };
