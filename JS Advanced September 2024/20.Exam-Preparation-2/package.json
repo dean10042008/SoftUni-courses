@@ -1,0 +1,9 @@
+{
+  "type": "module",
+  "scripts": {
+    "test": "mocha './**/*.test.js'"
+  },
+  "devDependencies": {
+    "mocha": "^10.7.3"
+  }
+}
