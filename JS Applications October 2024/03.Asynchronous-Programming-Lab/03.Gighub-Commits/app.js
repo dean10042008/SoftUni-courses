@@ -13,7 +13,6 @@ async function loadCommits() {
         const data = await res.json();
         
         for (const commit of data) {
-            console.log(commit);
             const li = document.createElement("li");
             li.textContent = `${commit.commit.author.name}: ${commit.commit.message}`;
             commitsListEl.appendChild(li);
