@@ -17,7 +17,6 @@ function attachEvents() {
         });
 
         const data = await res.json();
-        console.log(data);
     });
 
     refreshBtn.addEventListener("click", async () => {
