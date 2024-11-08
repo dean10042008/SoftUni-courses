@@ -11,13 +11,13 @@ let id = "";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const response = await fetch(postsUrl);
-    const posts = Object.entries(await response.json());
-    postList.innerHTML = "";
+    const posts = Object.values(await response.json());
 
+    postList.innerHTML = "";
     commentList.style.display = "none";
 
     posts.forEach(post => {
-        postList.appendChild(createBlogTopic(post[1].content, post[1].username, post[1].time, post[1].topic, post[1]._id));
+        postList.appendChild(createBlogTopic(post.content, post.username, post.time, post.title, post._id));
     });
 });
 
@@ -46,7 +46,7 @@ postBtn.addEventListener("click", async (e) => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                topic,
+                title: topic,
                 username,
                 content,
                 time,
@@ -55,7 +55,7 @@ postBtn.addEventListener("click", async (e) => {
 
         const data = await res.json();
 
-        postList.appendChild(createBlogTopic(content, username, time, topic, data._id));
+        postList.appendChild(createBlogTopic(data.content, data.username, data.time, data.title, data._id));
 
         topicNameEl.value = "";
         usernameEl.value = "";
@@ -71,7 +71,7 @@ const addCommentForm = document.querySelector(".answer form");
 addCommentForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const [postTextEl, usernameEl] = addCommentForm.querySelectorAll("textarea, input");
+    const [postTextEl, usernameEl] = addCommentForm.querySelectorAll("textarea input");
 
     if (postTextEl.value === "" || usernameEl.value === "") return;
 
@@ -131,15 +131,13 @@ function createBlogTopic(content, username, time, topic, topicId) {
     topicNameDiv.classList.add("topic-name");
 
     const a = document.createElement("a");
-    a.href = "#";
-    a.classList.add("normal");
 
     const h2 = document.createElement("h2");
     h2.textContent = topic;
 
     a.appendChild(h2);
 
-    a.addEventListener("click", async (e) => {
+    h2.addEventListener("click", async (e) => {
         e.preventDefault();
         postList.style.display = "none";
         newPostEl.style.display = "none";
@@ -148,7 +146,7 @@ function createBlogTopic(content, username, time, topic, topicId) {
         id = topicId;
 
         const res = await fetch(postsUrl + `/${id}`);
-        const { content, time, topic, username } = await res.json();
+        const { content, time, title, username } = await res.json();
 
         const themeTitle = document.createElement("div");
         themeTitle.classList.add("theme-title");
@@ -156,7 +154,7 @@ function createBlogTopic(content, username, time, topic, topicId) {
         themeTitle.innerHTML = `
                 <div class="theme-name-wrapper">
                     <div class="theme-name">
-                        <h2>${topic}</h2>
+                        <h2>${title}</h2>
                     </div>
                 </div>
             `;
