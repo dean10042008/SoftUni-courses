@@ -1,4 +1,5 @@
 const [nav, home, register, login, dashboard, detail, create] = document.querySelectorAll(".container, #dashboard-holder");
+let main = document.querySelector("main");
 showHome();
 handleNavChanges();
 
@@ -22,7 +23,7 @@ links.forEach(link => link.addEventListener("click", (e) => {
     }
 }));
 
-const loginForm = document.querySelector("#form-login");
+const loginForm = login.querySelector("#form-login");
 
 loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -56,7 +57,7 @@ loginForm.addEventListener("submit", async (e) => {
     }
 });
 
-const registerForm = document.querySelector("#form-register");
+const registerForm = register.querySelector("#form-register");
 
 registerForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -297,7 +298,7 @@ async function createIdeaDetails(id) {
     }
 }
 
-const ideaForm = document.querySelector("#form-idea");
+const ideaForm = create.querySelector("#form-idea");
 ideaForm.addEventListener("submit", createNewIdea);
 
 async function createNewIdea(e) {
@@ -341,57 +342,57 @@ async function createNewIdea(e) {
 }
 
 function showHome() {
-    home.style.display = 'block';
-    register.style.display = 'none';
-    login.style.display = 'none';
-    dashboard.style.display = 'none';
-    detail.style.display = 'none';
-    create.style.display = 'none';
+    main.appendChild(home);
+    register.remove();
+    login.remove();
+    dashboard.remove();
+    detail.remove();
+    create.remove();
 }
 
 function showRegister() {
-    home.style.display = 'none';
-    register.style.display = 'block';
-    login.style.display = 'none';
-    dashboard.style.display = 'none';
-    detail.style.display = 'none';
-    create.style.display = 'none';
+    home.remove();
+    main.appendChild(register)
+    login.remove();
+    dashboard.remove();
+    detail.remove();
+    create.remove();
 }
 
 function showLogin() {
-    home.style.display = 'none';
-    register.style.display = 'none';
-    login.style.display = 'flex';
-    dashboard.style.display = 'none';
-    detail.style.display = 'none';
-    create.style.display = 'none';
+    home.remove();
+    register.remove();
+    main.appendChild(login);
+    dashboard.remove();
+    detail.remove();
+    create.remove();
 }
 
 function showDashboard() {
     loadIdeas();
 
-    home.style.display = 'none';
-    register.style.display = 'none';
-    login.style.display = 'none';
-    dashboard.style.display = 'flex';
-    detail.style.display = 'none';
-    create.style.display = 'none';
+    home.remove();
+    register.remove();
+    login.remove();
+    main.appendChild(dashboard);
+    detail.remove();
+    create.remove();
 }
 
 function showDetail() {
-    home.style.display = 'none';
-    register.style.display = 'none';
-    login.style.display = 'none';
-    dashboard.style.display = 'none';
-    detail.style.display = 'flex';
-    create.style.display = 'none';
+    home.remove();
+    register.remove();
+    login.remove();
+    dashboard.remove();
+    main.appendChild(detail);
+    create.remove();
 }
 
 function showCreate() {
-    home.style.display = 'none';
-    register.style.display = 'none';
-    login.style.display = 'none';
-    dashboard.style.display = 'none';
-    detail.style.display = 'none';
-    create.style.display = 'block';
+    home.remove();
+    register.remove();
+    login.remove();
+    dashboard.remove();
+    detail.remove();
+    main.appendChild(create);
 }
