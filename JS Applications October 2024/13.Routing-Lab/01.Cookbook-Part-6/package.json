@@ -1,0 +1,23 @@
+{
+  "name": "cook-book",
+  "version": "1.0.0",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "dev": "lite-server --baseDir=src",
+    "test": "mocha tests/e2e.test.js --timeout 10000"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "chai": "^5.1.2",
+    "lite-server": "^2.6.1",
+    "mocha": "^10.8.2",
+    "playwright-chromium": "^1.48.2"
+  },
+  "dependencies": {
+    "lit-html": "^3.2.1"
+  }
+}
