@@ -1,0 +1,15 @@
+export const endpoints = {
+    register: "http://localhost:3030/users/register",
+    login: "http://localhost:3030/users/login",
+    logout: "http://localhost:3030/users/logout",
+    getAllTeams: "http://localhost:3030/data/teams",
+    createTeam: "http://localhost:3030/data/teams",
+    requestMember: `http://localhost:3030/data/members`,
+    getAllMembers: "http://localhost:3030/data/members?where=status%3D%22member%22",
+    getMembersByTeamId: (...ids) => `http://localhost:3030/data/members?where=${encodeURIComponent(`teamId IN (${ids.map((id) => `"${id}"`).join(",")}) AND status="member"`)}`,
+    addMemberToTeam: (id) => `http://localhost:3030/data/members/${id}`,
+    deleteMemberFromTeam: (id) => `http://localhost:3030/data/members/${id}`,
+    getOwnTeams: (id) => `http://localhost:3030/data/members?where=_ownerId%3D%22${id}%22%20AND%20status%3D%22member%22&load=team%3DteamId%3Ateams`,
+    getDetails: (id) => `http://localhost:3030/data/teams/${id}`,
+    getMembersDetails: (id) => `http://localhost:3030/data/members?where=teamId%3D%22${id}%22&load=user%3D_ownerId%3Ausers`,
+};
