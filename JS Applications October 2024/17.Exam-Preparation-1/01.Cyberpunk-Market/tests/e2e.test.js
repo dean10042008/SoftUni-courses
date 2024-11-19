@@ -5,7 +5,7 @@ const host = "http://localhost:3000"; // Application host (NOT service host - th
 const interval = 300;
 const timeout = 6000;
 const DEBUG = false;
-const slowMo = 500;
+const slowMo = 1000;
 
 
 const mockData = {
@@ -88,7 +88,6 @@ describe("E2E tests", function () {
     });
     after(async () => {
         await browser.close();
-
     });
     beforeEach(async function () {
         this.timeout(10000);

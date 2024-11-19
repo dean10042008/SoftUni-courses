@@ -1,4 +1,5 @@
 import { endpoints } from "../../api/endpoints.js";
+import { displayErrorMessage } from "../../modules/helpers.js";
 import { page, html, render } from "../../modules/modules.js";
 
 const rootEl = document.querySelector("#main-element");
@@ -74,7 +75,8 @@ const deleteItem = async (e, itemId) => {
         }
         catch (error) {
             console.error("Error:", error);
-            alert(error.message);
+            // alert(error.message);
+            displayErrorMessage(error.message);
         }
     }
 }

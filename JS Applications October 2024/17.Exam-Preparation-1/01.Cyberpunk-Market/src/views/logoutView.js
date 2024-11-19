@@ -1,5 +1,6 @@
 import { page } from "../../modules/modules.js";
 import { endpoints } from "../../api/endpoints.js";
+import { displayErrorMessage } from "../../modules/helpers.js";
 
 const rootEl = document.querySelector("#main-element");
 
@@ -21,6 +22,7 @@ export const renderLogout = async () => {
     }
     catch (error) {
         console.error("Error:", error);
-        alert(error.message);
+        // alert(error.message);
+        displayErrorMessage(error.message);
     }
 }

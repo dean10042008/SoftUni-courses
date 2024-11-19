@@ -1,5 +1,6 @@
 import { page, html, render } from "../../modules/modules.js";
 import { endpoints } from "../../api/endpoints.js";
+import { displayErrorMessage } from "../../modules/helpers.js";
 
 const rootEl = document.querySelector("#main-element");
 
@@ -55,6 +56,7 @@ const handleFormSubmit = async (e) => {
     }
     catch (error) {
         console.error("Error:", error);
-        alert(error.message);
+        // alert(error.message);
+        displayErrorMessage(`Error ${error.message}`);
     }
 }

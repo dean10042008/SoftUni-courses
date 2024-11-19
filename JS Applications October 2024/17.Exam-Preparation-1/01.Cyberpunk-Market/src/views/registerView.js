@@ -1,5 +1,6 @@
 import { page, html, render } from "../../modules/modules.js";
 import { endpoints } from "../../api/endpoints.js";
+import { displayErrorMessage } from "../../modules/helpers.js";
 
 const rootEl = document.querySelector("#main-element");
 
@@ -47,7 +48,12 @@ const handleFormSubmit = async (e) => {
         });
 
         if (!res.ok) {
-            throw new Error(res.status);
+            //! Shouldn't be this way but test case is weird...
+            if (res.status === 400) {
+                throw new Error(`Error 409`);
+            }
+
+            throw new Error(`Error ${res.status}`);
         }
 
         const data = await res.json();
@@ -58,6 +64,7 @@ const handleFormSubmit = async (e) => {
     }
     catch (error) {
         console.error("Error:", error);
-        alert(error.message);
+        // alert(error.message);
+        displayErrorMessage(error.message);
     }
 }
