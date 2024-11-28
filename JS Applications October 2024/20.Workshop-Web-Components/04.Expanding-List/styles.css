@@ -19,11 +19,11 @@ li::before {
 }
 
 .open::before {
-    background-image: url(img/down.png);
+    background-image: url(./img/down.png);
 }
 
 .closed::before {
-    background-image: url(img/right.png);
+    background-image: url(./img/right.png);
 }
 
 .closed .closed::before,
