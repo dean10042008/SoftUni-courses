@@ -3,6 +3,7 @@
     margin: 0;
     box-sizing: border-box;
     border: none;
+    scroll-behavior: smooth;
 }
 
 body {
