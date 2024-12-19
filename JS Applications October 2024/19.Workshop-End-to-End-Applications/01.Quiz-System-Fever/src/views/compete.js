@@ -80,8 +80,10 @@ export async function competeView(ctx) {
 
     quizData = (await getOne(quizId)).data;
     questionsData = (await getAllQuestions(quizId)).data;
+    correctQuestionAnswers = [];
+    currentQuestionIndex = 0;
 
-    uncheckQuestions(0);
+    uncheckQuestions(currentQuestionIndex);
 }
 
 function nextQuestion(e) {

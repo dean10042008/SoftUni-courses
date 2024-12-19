@@ -240,7 +240,7 @@ const server = http.createServer((req, res) => {
             delete findUser.accessToken;
 
             res.writeHead(200, { 'Content-Type': 'application/json' });
-            return res.end(JSON.stringify({ message: 'Logout successfull!' }));
+            return res.end(JSON.stringify({ message: 'Logout successful!' }));
         }
         res.writeHead(404, { 'Content-Type': 'application/json' });
         return res.end(JSON.stringify({ message: 'Failed to find user!' }));
@@ -248,6 +248,7 @@ const server = http.createServer((req, res) => {
     }
 
     if (req.url === '/users/verify' && req.method === 'GET') { // Get verification for the current user. Authorization required.
+
         if (!req.headers['x-authorization']) {
             res.writeHead(401, { 'Content-Type': 'application/json' });
             return res.end(JSON.stringify({ message: 'Authorization required!' }));
@@ -256,9 +257,9 @@ const server = http.createServer((req, res) => {
 
         if (findUser) {
             res.writeHead(200, { 'Content-Type': 'application/json' });
-            return res.end(JSON.stringify({ message: `Verification successfull. User ${findUser.username} is currently logged-in!` }));
+            return res.end(JSON.stringify({ message: `Verification successful.` }));
         }
-        res.writeHead(404, { 'Content-Type': 'application/json' });
+        res.writeHead(200, { 'Content-Type': 'application/json' });
         return res.end(JSON.stringify({ message: 'Failed to verify user! Wrong Access Token!' }));
     }
 
@@ -427,6 +428,9 @@ const server = http.createServer((req, res) => {
                 questions.push(newQuestion);
                 findQuiz.questionCount++;
 
+                // findQuiz.takenCount = 0;
+                // solutions = solutions.filter(solution => solution.quizId !== findQuiz.quizId); // this will delete all solutions for the edited quiz, so the users can solve the quiz again after it has been edited
+
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 return res.end(JSON.stringify({ message: `Successfully added new question for Quiz: ${findQuiz.title}`, data: newQuestion }));
             }
@@ -538,11 +542,22 @@ const server = http.createServer((req, res) => {
                     return res.end(JSON.stringify({ message: `Correct must be in the range of the number of questions ( ${findQuiz.questionCount} ) for quiz ${findQuiz.title}` }));
                 }
 
+                if (findQuiz.quizOwnerId === findUser.userId) {
+                    res.writeHead(409, { 'Content-Type': 'application/json' });
+                    return res.end(JSON.stringify({ message: `User ${findUser.username} is the creator of the quiz ${findQuiz.title}, so he can't solve it!` }));
+                }
+
                 const findSolution = solutions.find(solution => solution.quizId === findQuiz.quizId && solution.userId === findUser.userId);
 
-                if (findSolution) {
-                    res.writeHead(409, { 'Content-Type': 'application/json' });
-                    return res.end(JSON.stringify({ message: `User ${findUser.username} has already sent a solution for quiz: ${findQuiz.title}` }));
+                // if (findSolution) {
+                //     res.writeHead(409, { 'Content-Type': 'application/json' });
+                //     return res.end(JSON.stringify({ message: `User ${findUser.username} has already sent a solution for quiz: ${findQuiz.title}` }));
+                // }
+
+                if (findSolution && findSolution.correct >= parsedBody.correct) {
+                    findQuiz.takenCount++;
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    return res.end(JSON.stringify({ message: `User ${findUser.username} already has a better or equal solution for the quiz ${findQuiz.title}`, data: findSolution }));
                 }
 
                 const solutionId = crypto.randomUUID();
@@ -560,8 +575,13 @@ const server = http.createServer((req, res) => {
                 findQuiz.takenCount++;
                 solutions.push(newSolution);
 
+                if (findSolution) {
+                    const indexOfFindSolution = solutions.indexOf(findSolution);
+                    solutions.splice(indexOfFindSolution, 1);
+                }
+
                 res.writeHead(200, { 'Content-Type': 'application/json' });
-                return res.end(JSON.stringify({ message: 'Solution added successfully!', data: newSolution }));
+                return res.end(JSON.stringify({ message: `Best solution from user ${findUser.username} for quiz ${findQuiz.title} so far!`, data: newSolution }));
             }
             catch (err) {
                 res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -798,6 +818,9 @@ const server = http.createServer((req, res) => {
                 const currentDate = new Date();
                 findQuiz.quizEditedOnDate = currentDate;
 
+                // findQuiz.takenCount = 0;
+                // solutions = solutions.filter(solution => solution.quizId !== findQuiz.quizId); // this will delete all solutions for the edited quiz, so the users can solve the quiz again after it has been edited
+
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 return res.end(JSON.stringify({ message: `Successfully edited question for Quiz: ${findQuiz.title}`, data: editQuestion }));
             }
@@ -847,6 +870,45 @@ const server = http.createServer((req, res) => {
 
         res.writeHead(200, { 'Content-Type': 'application/json' });
         return res.end(JSON.stringify({ message: `Successfully deleted question with text: ${findQuestion.text}` }));
+    }
+
+    if (query.quizIdCheckSolution && req.method === 'GET') { // Get a specific solution. Authorization required. URL - /data/&&quizIdCheckSolution=${quizId}
+        // this request is to check if a user is logged in and is not the creator of the quiz, so it will determine if the user can solve or can't solve the quiz
+
+        if (!req.headers['x-authorization']) {
+            res.writeHead(401, { 'Content-Type': 'application/json' });
+            return res.end(JSON.stringify({ message: 'Authorization required!' }));
+        }
+
+        const findUser = users.find(user => user.accessToken === req.headers['x-authorization']);
+
+        if (!findUser) {
+            res.writeHead(401, { 'Content-Type': 'application/json' });
+            return res.end(JSON.stringify({ message: 'Authorization failed! Wrong Access Token!' }));
+        }
+        const quizId = query.quizIdCheckSolution;
+
+        const findQuiz = quizzes.find(quiz => quiz.quizId === quizId);
+
+        if (!findQuiz) {
+            res.writeHead(404, { 'Content-Type': 'application/json' });
+            return res.end(JSON.stringify({ message: 'Quiz with the given ID does not exist!' }));
+        }
+
+        if (findQuiz.quizOwnerId === findUser.userId) {
+            res.writeHead(409, { 'Content-Type': 'application/json' });
+            return res.end(JSON.stringify({ message: `User ${findUser.username} is the creator of the quiz ${findQuiz.title}, so he can't solve it!`, data: 0 }));
+        }
+
+        //const findSolution = solutions.find(solution => solution.quizId === findQuiz.quizId && solution.userId === findUser.userId);
+
+        // if (findSolution) {
+        //     res.writeHead(409, { 'Content-Type': 'application/json' });
+        //     return res.end(JSON.stringify({ message: `User ${findUser.username} has already sent a solution for quiz: ${findQuiz.title}, so he can't solve it again!` }, { data: 0 }));
+        // }
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({ message: `User ${findUser.username}, is not the creator of the quiz ${findQuiz.title}, so he can solve it!`, data: 1 }));
     }
 
     res.writeHead(404, { 'Content-Type': 'application/json' });

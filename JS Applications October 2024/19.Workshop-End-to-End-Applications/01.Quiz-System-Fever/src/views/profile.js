@@ -20,8 +20,8 @@ const template = (profileData, isUserSame) => html`
                     <span class="profile-info">Email:</span>
                     ${profileData.email}
                 </p>
-                ${isUserSame ? html`
-                <h2>Your Quiz Results</h2>
+                
+                <h2>${profileData.username} Quiz Results</h2>
                 <table class="quiz-results">
                     <tbody>
                         ${
@@ -38,24 +38,28 @@ const template = (profileData, isUserSame) => html`
                         }
                         
                     </tbody>
-                </table>` : ""}
+                </table>
             </article>
         </div>
         
-        ${isUserSame ? html`
         <header class="pad-large">
-            <h2>Quizzes created by you</h2>
+            <h2>Quizzes created by ${profileData.username}</h2>
         </header>
 
         <div class="pad-large alt-page">
             ${
                 profileData.quizzesOwnedByTheUser && profileData.quizzesOwnedByTheUser.map(quiz => html`
                     <article class="preview layout">
-                        <div class="right-col">
-                            <a @click=${(e) => onDetailsClick(e, quiz.quizId)} class="action cta" href="#">View Quiz</a>
-                            <a @click=${(e) => editQuiz(e, quiz.quizId)} class="action cta" href="#"><i class="fas fa-edit"></i></a>
-                            <a @click=${(e) => deleteQuiz(e, quiz.quizId)} class="action cta" href="#"><i class="fas fa-trash-alt"></i></a>
-                        </div>
+                        ${
+                            isUserSame ? html`
+                                <div class="right-col">
+                                    <a @click=${(e) => onDetailsClick(e, quiz.quizId)} class="action cta" href="#">View Quiz</a>
+                                    <a @click=${(e) => editQuiz(e, quiz.quizId)} class="action cta" href="#"><i class="fas fa-edit"></i></a>
+                                    <a @click=${(e) => deleteQuiz(e, quiz.quizId)} class="action cta" href="#"><i class="fas fa-trash-alt"></i></a>
+                                </div>
+                            ` : ""
+                        }
+                        
                         <div class="left-col">
                             <h3><a @click=${(e) => onDetailsClick(e, quiz.quizId)} class="quiz-title-link" href="#">${quiz.title}</a></h3>
                             <span class="quiz-topic">Topic: ${quiz.topic}</span>
@@ -68,7 +72,7 @@ const template = (profileData, isUserSame) => html`
                     </article>
                 `)
             }
-        </div>` : ""}
+        </div>
 
     </section>
 `;
@@ -77,7 +81,7 @@ export async function profileView(ctx) {
     const username = ctx.params.username;
     const profileData = (await getProfileData(username)).data;
 
-    const isUserSame = profileData.username === JSON.parse(localStorage.getItem('userData')).username;
+    const isUserSame = localStorage.getItem("userData") ? (profileData.username === JSON.parse(localStorage.getItem('userData')).username) : false;
 
     render(template(profileData, isUserSame), main);
 }

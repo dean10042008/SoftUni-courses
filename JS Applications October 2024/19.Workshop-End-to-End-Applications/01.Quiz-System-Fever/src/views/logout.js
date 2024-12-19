@@ -13,7 +13,7 @@ export async function logout() {
         }
     });
     const data = await res.json();
-    if (data.message === 'Logout successfull!') {
+    if (data.message === 'Logout successful!') {
         localStorage.clear();
         page.redirect('/');
         return;

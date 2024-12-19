@@ -25,8 +25,8 @@ const template = (isLogged, logoutHandler) => html`
 `;
 
 export async function navigation(ctx, next) {
-    const userData = await authorize() !== null;
-
+    const userData = await authorize();
+    
     render(template(userData, logout), header);
     next();
 }
@@ -37,7 +37,7 @@ async function authorize() {
 
         const res = await fetch('http://localhost:5001/users/verify', {
             method: 'GET',
-            headers: { 
+            headers: {
                 "Content-Type": "application/json",
                 'x-authorization': headerAuthorization
             }
@@ -45,13 +45,14 @@ async function authorize() {
 
         const data = await res.json();
 
-        if ( ! res.ok) {
-            throw new Error(data.message);
+        if (data.message !== 'Verification successful.') {
+            localStorage.clear();
+            return false;
         }
+        return true;
     }
     catch (err) {
         console.error(err);
         localStorage.clear();
-        return null;
     }
 }

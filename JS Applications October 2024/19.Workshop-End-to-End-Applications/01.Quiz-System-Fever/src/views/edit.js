@@ -159,6 +159,7 @@ const template = (data, quizId) => html`
 
 export async function editView(ctx) {
     const questionData = await getAllQuestions(ctx.params.id);
+    isBeingEdit = [];
 
     if (questionData.data.length === 0) {
         isBeingEdit[0] = true;

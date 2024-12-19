@@ -40,7 +40,7 @@ const template = (data = null) => html`
                         <a @click=${(e) => onDetailsClick(e, item.quizId)} class="action cta" href="#">View Quiz</a>
                     </div>
                     <div class="left-col">
-                        <h3><a class="quiz-title-link" href="#">${item.title}</a></h3>
+                        <h3><a @click=${(e) => onDetailsClick(e, item.quizId)} class="quiz-title-link" href="#">${item.title}</a></h3>
                         <span class="quiz-topic">Topic: ${item.topic}</span>
                         <div class="quiz-meta">
                             <span>${item.questionCount} questions</span>
