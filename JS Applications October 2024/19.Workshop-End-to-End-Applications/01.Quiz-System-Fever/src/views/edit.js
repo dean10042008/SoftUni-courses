@@ -18,9 +18,9 @@ const template = (data, quizId) => html`
         <div class="pad-large alt-page">
 
             ${isBeingEdit.map((_, i) => {
-                    const item = data[i];
-                    
-                    return !isBeingEdit[i] ? html`
+    const item = data[i];
+
+    return !isBeingEdit[i] ? html`
                         <article class="editor-question">
                             <div class="layout">
                                 <div class="question-control">
@@ -31,11 +31,10 @@ const template = (data, quizId) => html`
                             </div>
                             <form>
                                 <p class="editor-input">${item.text}</p>
-                                ${
-                                    item.answers.map((answer, answerIndex) => {
-                                        const checked = answerIndex === item.correctIndex;
+                                ${item.answers.map((answer, answerIndex) => {
+        const checked = answerIndex === item.correctIndex;
 
-                                        return checked ? html`
+        return checked ? html`
                                             <div class="editor-input">
                                                 <label class="radio">
                                                     <input checked class="input" type="radio" name="question-2" value="0" disabled />
@@ -52,8 +51,8 @@ const template = (data, quizId) => html`
                                                 <span>${answer}</span>
                                             </div>
                                         `
-                                    })
-                                }
+    })
+        }
                             </form>
                         </article>
                 ` : item === undefined ? html`
@@ -70,8 +69,8 @@ const template = (data, quizId) => html`
                             <textarea class="input editor-input editor-text" name="text"
                                 placeholder="Enter question">${item ? item.text : ""}</textarea>
                             
-                            ${minAnswerCount.map((answer, answerIndex) => 
-                                answer !== null ? html`
+                            ${minAnswerCount.map((answer, answerIndex) =>
+            answer !== null ? html`
                                     <div class="editor-input">
 
                                         <label class="radio">
@@ -106,24 +105,23 @@ const template = (data, quizId) => html`
                             <textarea class="input editor-input editor-text" name="text"
                                 placeholder="Enter question">${item.text}</textarea>
                             
-                            ${item.answers.map((answer, answerIndex) => 
-                                html`
+                            ${item.answers.map((answer, answerIndex) =>
+                html`
                                     <div class="editor-input">
-                                        ${
-                                            answerIndex === item.correctIndex ?
-                                            html`
+                                        ${answerIndex === item.correctIndex ?
+                        html`
                                                 <label class="radio">
                                                     <input checked class="input" type="radio" name="question-1" value=${answerIndex} />
                                                     <i class="fas fa-check-circle" @click=${changeCorrect}></i>
                                                 </label>
                                             ` :
-                                            html`
+                        html`
                                                 <label class="radio">
                                                     <input class="input" type="radio" name="question-1" value=${answerIndex} />
                                                     <i class="fas fa-check-circle" @click=${changeCorrect}></i>
                                                 </label>
                                             `
-                                        }
+                    }
                                         
                                         <input class="input" type="text" name="answer-0" value=${answer ? answer : ""} />
                                         <button @click=${(e) => deleteAnswer(e, data, quizId, answerIndex)} class="input submit action"><i class="fas fa-trash-alt"></i></button>
@@ -139,8 +137,8 @@ const template = (data, quizId) => html`
 
                     </article>
                 `
-                })
-            }
+})
+    }
 
             <article class="editor-question">
                 <div class="editor-input">
@@ -168,7 +166,7 @@ export async function editView(ctx) {
     questionData.data.forEach((_, i) => {
         isBeingEdit[i] = false;
     })
-    
+
     render(template(questionData.data, ctx.params.id), main);
 }
 
@@ -177,8 +175,14 @@ async function saveChanges(e, quizId, index) {
 
     const answers = Array.from(e.target.closest(".editor-question").querySelectorAll("input.input[type='text']")).map(item => item.value);
     const text = e.target.closest(".editor-question").querySelector(".editor-text").value;
+    const isValidAnswers = Array.isArray(answers) && answers.every(question => typeof question === 'string' && question !== '');
+    const isValidCorrectIndex = (correctIndex >= 0 && correctIndex < answers.length) && typeof correctIndex === 'number';
 
     try {
+        if (!isValidAnswers || text === "" || !isValidCorrectIndex) {
+            throw new Error("All fields are required! Answers must be atleast 2!");
+        }
+
         const response = await fetch("http://localhost:5001/data/questions", {
             method: "POST",
             headers: {
@@ -194,15 +198,15 @@ async function saveChanges(e, quizId, index) {
         });
 
         const data = await response.json();
-
-        if (! response.ok) {
+        
+        if (!response.ok) {
             throw new Error(data.message);
         }
 
         isBeingEdit[index] = false;
         page();
     }
-    catch(err) {
+    catch (err) {
         alert(err.message);
         console.error(err);
     }
@@ -232,14 +236,14 @@ async function editChanges(e, quizId, index, questionId) {
 
         const data = await response.json();
 
-        if (! response.ok) {
+        if (!response.ok) {
             throw new Error(data.message);
         }
 
         isBeingEdit[index] = false;
         page();
     }
-    catch(err) {
+    catch (err) {
         alert(err.message);
         console.error(err);
     }
@@ -272,7 +276,7 @@ function addAnswer(e, data, quizId) {
 
 function addEditAnswer(e, data, quizId, answers) {
     e.preventDefault();
-    
+
     answers.push(null);
     render(template(data, quizId), main);
 }
@@ -291,7 +295,7 @@ function editQuestion(e, data, quizId, index) {
 
 async function deleteQuestion(e, questionId, index) {
     e.preventDefault();
-    
+
     if (confirm("Are you sure you want to delete this question?")) {
         try {
             const res = await fetch(`http://localhost:5001/data/&&questionIdDelete=${questionId}`, {
@@ -304,7 +308,7 @@ async function deleteQuestion(e, questionId, index) {
 
             const data = await res.json();
 
-            if ( ! res.ok) {
+            if (!res.ok) {
                 throw new Error(data.message);
             }
 

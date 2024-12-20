@@ -40,7 +40,7 @@ export async function createView() {
 async function onSubmit(e) {
     e.preventDefault();
 
-    const { title, topic, description } = Object.fromEntries(
+    let { title, topic, description } = Object.fromEntries(
         new FormData(e.currentTarget),
     );
 
@@ -49,28 +49,42 @@ async function onSubmit(e) {
             throw new Error("All fields are required!");
         }
 
+        if (topic === 'all') {
+            topic = 'All Categories';
+        }
+        if (topic === 'lang') {
+            topic = 'Languages';
+        }
+        if (topic === 'hardware') {
+            topic = 'Hardware';
+        }
+        if (topic === 'software') {
+            topic = 'Tools and Software';
+        }
+
         const response = await fetch("http://localhost:5001/data/quizzes", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "x-authorization": JSON.parse(localStorage.getItem("userData")).accessToken,
             },
-            body: JSON.stringify({ 
+            body: JSON.stringify({
                 title,
                 topic,
                 description
             }),
         });
-        
-        if (! response.ok) {
+
+        if (!response.ok) {
             const data = await response.json();
             throw new Error(data.message);
         };
 
         const data = await response.json();
+        
         page.redirect(`/browse/edit/${data.data.quizId}`);
     }
-    catch(err) {
+    catch (err) {
         alert(err.message);
         console.error(err);
     }

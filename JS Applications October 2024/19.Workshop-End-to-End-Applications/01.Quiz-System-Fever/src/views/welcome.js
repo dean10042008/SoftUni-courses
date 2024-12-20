@@ -14,10 +14,11 @@ const template = (quizCount, isLoggedIn, recent) => html`
                 ${!isLoggedIn ? html`<a class="action cta" href="/login">Sign in to create a quiz</a>` : ""}
             </div>
         </div>
-
+        ${recent !== false ? html`
         <div class="pad-large alt-page">
             <h2>Our most recent quiz:</h2>
 
+            
             <article class="preview layout">
                 <div class="right-col">
                     <a @click=${(e) => onDetailsClick(e, recent.quizId)} class="action cta" href="#">View Quiz</a>
@@ -37,6 +38,7 @@ const template = (quizCount, isLoggedIn, recent) => html`
                 <a class="action cta" href="/browse">Browse all quizzes</a>
             </div>
         </div>
+            ` : ''}
 
     </section>
 `;
@@ -44,6 +46,11 @@ const template = (quizCount, isLoggedIn, recent) => html`
 export async function welcomeView() {
     const quizCount = await getAll();
     const recentData = await getRecentData();
+
+    if (!recentData.hasOwnProperty('data')) {
+        recentData.data = false;
+    }
+
     const isLoggedIn = localStorage.getItem('userData') !== null;
 
     render(template(quizCount.length, isLoggedIn, recentData.data), main);
@@ -55,7 +62,7 @@ async function getRecentData() {
         const data = await response.json();
         return data;
     }
-    catch(err) {
+    catch (err) {
         console.error(err);
     }
 }

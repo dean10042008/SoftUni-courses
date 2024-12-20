@@ -63,6 +63,7 @@ async function registerHandler(e) {
         }
     })
     const data = await res.json();
+    
     if (data.message === 'Account registered successfully!') {
         localStorage.setItem('userData', JSON.stringify(data.data));
         page.redirect('/');

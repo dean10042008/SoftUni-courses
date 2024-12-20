@@ -21,7 +21,7 @@ const template = (profileData, isUserSame) => html`
                     ${profileData.email}
                 </p>
                 
-                <h2>${profileData.username} Quiz Results</h2>
+                <h2>${profileData.username} Quiz Best Results</h2>
                 <table class="quiz-results">
                     <tbody>
                         ${
@@ -31,7 +31,7 @@ const template = (profileData, isUserSame) => html`
                                 <tr class="results-row">
                                     <td class="cell-1">${date.getDate()}. ${(date.toLocaleString('default', { month: 'long' })).slice(0, 3)} ${date.getFullYear()}</td>
                                     <td class="cell-2"><a @click=${(e) => onDetailsClick(e, quiz.quizId)} href="#">${quiz.title}</a></td>
-                                    <td class="cell-3 s-correct">${(solution.correct / quiz.questionCount * 100) || 0}%</td>
+                                    <td class="cell-3 s-correct">${((solution.correct / quiz.questionCount * 100)).toFixed(1) || 0}%</td>
                                     <td class="cell-4 s-correct">${solution.correct}/${quiz.questionCount} correct answers</td>
                                 </tr>
                             `})
