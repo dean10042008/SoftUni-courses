@@ -96,6 +96,50 @@ app.post("/create", (req, res) => {
     });
 });
 
+app.get("/search", (req, res) => {
+    res.render("search", { movies });
+});
+
+app.post("/search", (req, res) => {
+    let data = "";
+
+    req.on("data", (chunk) => {
+        data += chunk;
+    });
+
+    req.on("end", () => {
+        const searchParams = Object.fromEntries(new URLSearchParams(data));
+        let filteredMovies = movies;
+        
+        if (searchParams.title !== "") {
+            filteredMovies = filteredMovies.filter(movie => movie.title.toLowerCase().includes(searchParams.title.toLowerCase()));
+
+            if (searchParams.genre === "" && searchParams.year === "") {
+                res.render("search", { movies: filteredMovies });
+            }
+        }
+        if (searchParams.genre !== "") {
+            filteredMovies = filteredMovies.filter(movie => movie.genre.toLowerCase().includes(searchParams.genre.toLowerCase()));
+            
+            if (searchParams.title === "" && searchParams.year === "") {
+                res.render("search", { movies: filteredMovies });
+            }
+        }
+        if (searchParams.year !== "") {
+            filteredMovies = filteredMovies.filter(movie => movie.year.toLowerCase().includes(searchParams.year.toLowerCase()));
+            
+            if (searchParams.title === "" && searchParams.genre === "") {
+                res.render("search", { movies: filteredMovies });
+            }
+        }
+        if (searchParams.title === "" && searchParams.genre === "" && searchParams.year === "") {
+            res.render("search", { movies: filteredMovies });
+        }
+
+        res.render("search", { movies: filteredMovies});
+    });
+});
+
 app.all("*", (req, res) => {
     res.render("404");
 });
