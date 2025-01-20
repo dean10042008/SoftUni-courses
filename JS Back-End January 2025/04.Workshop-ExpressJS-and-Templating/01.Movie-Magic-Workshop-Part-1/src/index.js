@@ -115,28 +115,28 @@ app.post("/search", (req, res) => {
             filteredMovies = filteredMovies.filter(movie => movie.title.toLowerCase().includes(searchParams.title.toLowerCase()));
 
             if (searchParams.genre === "" && searchParams.year === "") {
-                res.render("search", { movies: filteredMovies });
+                res.render("search", { movies: filteredMovies, filter: searchParams });
             }
         }
         if (searchParams.genre !== "") {
             filteredMovies = filteredMovies.filter(movie => movie.genre.toLowerCase().includes(searchParams.genre.toLowerCase()));
             
             if (searchParams.title === "" && searchParams.year === "") {
-                res.render("search", { movies: filteredMovies });
+                res.render("search", { movies: filteredMovies, filter: searchParams });
             }
         }
         if (searchParams.year !== "") {
             filteredMovies = filteredMovies.filter(movie => movie.year.toLowerCase().includes(searchParams.year.toLowerCase()));
             
             if (searchParams.title === "" && searchParams.genre === "") {
-                res.render("search", { movies: filteredMovies });
+                res.render("search", { movies: filteredMovies, filter: searchParams });
             }
         }
         if (searchParams.title === "" && searchParams.genre === "" && searchParams.year === "") {
-            res.render("search", { movies: filteredMovies });
+            res.render("search", { movies: filteredMovies, filter: searchParams });
         }
 
-        res.render("search", { movies: filteredMovies});
+        res.render("search", { movies: filteredMovies, filter: searchParams });
     });
 });
 
