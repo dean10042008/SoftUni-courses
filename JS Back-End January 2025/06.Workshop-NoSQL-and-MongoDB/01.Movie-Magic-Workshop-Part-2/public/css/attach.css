@@ -71,3 +71,8 @@ input[type="number"]::-webkit-outer-spin-button {
 .attach-form option select{
     font-weight: bold;
 }
+
+#attach-wrapper {
+  margin: auto;
+  width: 60%;
+}

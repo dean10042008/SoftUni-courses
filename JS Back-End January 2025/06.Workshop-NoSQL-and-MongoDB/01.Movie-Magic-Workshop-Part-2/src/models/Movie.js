@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 import { validator } from "../services/common-service.js";
 
 const movieSchema = new Schema({
@@ -42,10 +42,19 @@ const movieSchema = new Schema({
             message: "Image URL must be a valid URL."
         }
     },
+    // cast: [{
+    //     type: Types.ObjectId,
+    //     ref: "Cast",
+    //     required: false,
+    // }]
     cast: [{
-        type: Schema.Types.ObjectId,
-        ref: "Cast",
-        required: false,
+        _id: false,
+        character: String,
+        castData: {
+            type: Types.ObjectId,
+            ref: "Cast",
+            required: false
+        },
     }]
 });
 

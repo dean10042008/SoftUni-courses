@@ -21,11 +21,31 @@
 
                 <p class="disc">Description: {{movie.description}}</p>
                 <p class="card-category">Category: {{movie.category}}</p>
+
+                <div id="attach-wrapper">
+                    <a href="/movies/{{movie.id}}/attachCast" class="details">Attach</a>
+                </div>
             </div>
         </div>
         <div class="card_right">
             <img src="{{movie.imageUrl}}" alt="{{movie.title}}">
         </div>
+    </div>
+
+    <div class="main-cast-card">
+        {{#each casts}}
+            <div class="cast-card">
+                <div class="card-img">
+                    <img src="{{castData.imageUrl}}" alt="cast">
+                </div>
+                <div class="cast-info">
+                    <h1>{{castData.name}}</h1>
+                    <h3>Age: {{castData.age}}</h3>
+                    <h3>Born: {{castData.born}}</h3>
+                    <h3>Name in Movie: {{character}}</h3>
+                </div>
+            </div>
+        {{/each}}
     </div>
 
 </section>

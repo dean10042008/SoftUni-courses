@@ -3,14 +3,15 @@ import handlebars from 'express-handlebars';
 import mongoose from 'mongoose';
 
 import Movie from './models/Movie.js';
+import Cast from './models/Cast.js';
 
 import { getAll } from './services/movie-service.js';
+import { getAllCast } from './services/cast-service.js';
 
-
-const uriMovies = 'mongodb://0.0.0.0:27017/Movies';
+const uri = 'mongodb://0.0.0.0:27017/Movie-Magic';
 
 try {
-    await mongoose.connect(uriMovies);
+    await mongoose.connect(uri);
     console.log('Connected to DB Successfully');
 } catch (err) {
     console.error('Cannot connect to DB!');
@@ -96,8 +97,11 @@ app.get("/about", (req, res) => {
 
 app.get("/movies/:id/details", async (req, res) => {
     const { id } = req.params;
-    const movie = await Movie.findById(id);
-    res.render("details", { movie });
+    const movie = await Movie.findById(id).populate("cast.castData");
+
+    const casts = movie.cast;
+
+    res.render("details", { movie, casts });
 });
 
 app.get("/createMovie", (req, res) => {
@@ -105,42 +109,86 @@ app.get("/createMovie", (req, res) => {
 });
 
 app.post("/createMovie", async (req, res) => {
-    let data = "";
+    const movieData = req.body;
 
-    req.on("data", (chunk) => {
-        data += chunk;
-    });
+    if (Object.values(movieData).filter(x => x === "").length !== 0) {
+        return res.status(204).end("Bad Request.");
+    }
 
+    const newMovie = {
+        title: movieData.title,
+        genre: movieData.genre,
+        description: movieData.description,
+        imageUrl: movieData.imageUrl,
+        director: movieData.director,
+        year: Number(movieData.year),
+        rating: Number(movieData.rating),
+        category: movieData.category,
+    };
 
-    req.on("end", async () => {
-        const { title, genre, description, imageUrl, director, year, rating, category } = JSON.parse(data);
-
-        const newMovie = {
-            title,
-            genre,
-            description,
-            imageUrl,
-            director,
-            year: Number(year),
-            rating: Number(rating),
-            category,
-        };
-
-        try {
-            await Movie.create(newMovie);
-        }
-        catch (err) {
-            console.error(err);
-            res.status(400).send({ message: "Invalid movie data." });
-        }
-        finally {
-            return res.end();
-        }
-    });
+    try {
+        await Movie.create(newMovie);
+        res.redirect("/");
+    }
+    catch (err) {
+        console.error(err);
+        return res.status(204).end("Bad Request.");
+    }
 });
 
 app.get('/createCast', (req, res) => {
     res.render('create-cast');
+});
+
+app.post('/createCast', async (req, res) => {
+    const castData = req.body;
+
+    if (Object.values(castData).filter(x => x === "").length !== 0) {
+        return res.status(204).end("Bad Request.");
+    }
+
+    try {
+        await Cast.create(castData);
+        res.redirect('/');
+    }
+    catch (err) {
+        console.error(err);
+        return res.status(204).end("Bad Request.");
+    }
+});
+
+app.get('/movies/:id/attachCast', async (req, res) => {
+    const { id } = req.params;
+    const movie = await Movie.findById(id);
+    const casts = await getAllCast({ exclude: movie.cast });
+
+    res.render('attach-cast', { movie, casts });
+});
+
+app.post('/movies/:id/attachCast', async (req, res) => {
+    if (req.body.cast === "" || req.body.character === "") {
+        return res.status(204).end("Bad Request.");
+    }
+
+    const castId = req.body.cast;
+    const character = req.body.character;
+    const movieId = req.params.id;
+
+    // * Way #1
+    // const movie = await Movie.findById(movieId);
+    // movie.cast.push(castId);
+    // await movie.save();
+
+    // * Way #2
+    await Movie.findByIdAndUpdate(movieId, {
+        $push: {
+            cast: {
+                castData: castId, character
+            }
+        }
+    });
+
+    res.redirect(`/movies/${movieId}/details`);
 });
 
 app.get("/search", async (req, res) => {

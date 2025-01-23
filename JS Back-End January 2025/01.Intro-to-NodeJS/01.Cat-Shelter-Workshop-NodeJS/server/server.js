@@ -56,11 +56,11 @@ const server = http.createServer((req, res) => {
         return;
     }
 
-    if (url === "/getAllCats") { // Gets all cats.
+    if (url === "/getAllCats" && req.method === "GET") { // Gets all cats.
         res.setHeader("Content-Type", "application/json");
         res.end(JSON.stringify(cats));
     }
-    else if (url === "/getAllBreeds") { // Gets all breeds.
+    else if (url === "/getAllBreeds" && req.method === "GET") { // Gets all breeds.
         res.setHeader("Content-Type", "application/json");
         res.end(JSON.stringify(breeds));
     }

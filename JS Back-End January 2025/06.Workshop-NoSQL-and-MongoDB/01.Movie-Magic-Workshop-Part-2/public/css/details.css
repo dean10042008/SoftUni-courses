@@ -214,6 +214,7 @@ span {
   margin-top: 10px;
   width: 150px;
   height: 150px;
+  object-fit: cover;
 }
 
 .PV {
@@ -239,4 +240,13 @@ span {
   font-weight: bold;
   border-radius: 15px;
   margin-left: 10px;
+}
+
+#attach-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+#attach-wrapper a {
+  padding: 10px 30px;
 }
