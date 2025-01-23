@@ -72,7 +72,7 @@ const app = express();
 
 // Config static middleware
 
-app.use(express.static('../public'));
+app.use(express.static('./public'));
 app.use(express.urlencoded({ extended: false }));
 
 // Add handlebars engine to express engines
