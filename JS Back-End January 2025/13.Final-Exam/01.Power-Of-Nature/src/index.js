@@ -48,7 +48,7 @@ app.engine('hbs', handlebars.engine({
 app.set('view engine', 'hbs');
 
 app.get("/", (req, res) => {
-    return res.render("home");
+    return res.render("home", { title: "Home" });
 });
 
 app.get("/register", (req, res) => {
@@ -56,7 +56,7 @@ app.get("/register", (req, res) => {
         return res.redirect("/");
     }
 
-    return res.render("register");
+    return res.render("register", { title: "Register" });
 });
 
 app.post("/register", async (req, res) => {
@@ -77,7 +77,7 @@ app.post("/register", async (req, res) => {
     }
     catch (err) {
         console.error(err);
-        return res.render("register", { error: getErrorMessage(err), username, email });
+        return res.render("register", { error: getErrorMessage(err), username, email, title: "Register" });
     }
 
     const token = jwt.sign(
@@ -100,7 +100,7 @@ app.get("/login", (req, res) => {
         return res.redirect("/");
     }
 
-    return res.render("login");
+    return res.render("login", { title: "Login" });
 });
 
 app.post("/login", async (req, res) => {
@@ -120,7 +120,7 @@ app.post("/login", async (req, res) => {
     }
     catch (err) {
         console.error(err);
-        return res.render("login", { error: getErrorMessage(err), email });
+        return res.render("login", { error: getErrorMessage(err), email, title: "Login" });
     }
 
     const token = jwt.sign(
@@ -152,7 +152,7 @@ app.get("/logout", (req, res) => {
 app.get("/catalog", async (req, res) => {
     const all = await Product.find({});
 
-    return res.render("catalog", { all });
+    return res.render("catalog", { all, title: "Catalog" });
 });
 
 app.get("/catalog/:id/details", async (req, res) => {
@@ -167,7 +167,7 @@ app.get("/catalog/:id/details", async (req, res) => {
         hasRecommended = productData.recommendList.includes(user._id);
     }
 
-    res.render("details", { isOwner, hasRecommended, productData });
+    res.render("details", { isOwner, hasRecommended, productData, title: "Details" });
 });
 
 app.get("/catalog/:id/edit", async (req, res) => {
@@ -183,7 +183,7 @@ app.get("/catalog/:id/edit", async (req, res) => {
         return res.redirect("/");
     }
     
-    res.render("edit", { name: productData.name, description: productData.description, image: productData.image, type: productData.type, location: productData.location, year: productData.year });
+    res.render("edit", { name: productData.name, description: productData.description, image: productData.image, type: productData.type, location: productData.location, year: productData.year, title: "Edit" });
 });
 
 app.post("/catalog/:id/edit", async (req, res) => {
@@ -203,7 +203,7 @@ app.post("/catalog/:id/edit", async (req, res) => {
     }
     catch(err) {
         console.error(err);
-        return res.render("edit", { error: getErrorMessage(err), name, type, image, description, year, location });
+        return res.render("edit", { error: getErrorMessage(err), name, type, image, description, year, location, title: "Edit" });
     }
 
     res.redirect(`/catalog/${req.params.id}/details`);
@@ -228,7 +228,7 @@ app.get("/catalog/:id/delete", async (req, res) => {
     }
     catch(err) {
         console.error(err);
-        return res.render(`/catalog/${req.params.id}/details`, { error: getErrorMessage(err) });
+        return res.render("details", { error: getErrorMessage(err), title: "Details" });
     }
 
     res.redirect("/catalog");
@@ -272,7 +272,7 @@ app.get("/add", (req, res) => {
         res.end();
     }
 
-    return res.render("add");
+    return res.render("add", { title: "Create" });
 });
 
 app.post("/add", async (req, res) => {
@@ -295,7 +295,7 @@ app.post("/add", async (req, res) => {
     }
     catch(err) {
         console.error(err);
-        return res.render("add", { error: getErrorMessage(err), name, type, image, description, year, location });
+        return res.render("add", { error: getErrorMessage(err), name, type, image, description, year, location, title: "Create" });
     }
 
     res.redirect("/catalog");
@@ -305,7 +305,7 @@ app.post("/add", async (req, res) => {
 app.get("/search", async (req, res) => {
     const all = await Product.find({});
 
-    res.render("search", { all });
+    res.render("search", { all, title: "Search" });
 });
 
 app.post("/search", async (req, res) => {
@@ -323,11 +323,11 @@ app.post("/search", async (req, res) => {
 
     const products = await Product.find(query);
     
-    res.render("search", { all: products, searchParams });
+    res.render("search", { all: products, searchParams, title: "Search" });
 });
 
 app.get("*", (req, res) => {
-    res.render("404");
+    res.render("404", { title: "404" });
 });
 
 app.listen(3000, () => "App is listening on http://localhost:3000");
