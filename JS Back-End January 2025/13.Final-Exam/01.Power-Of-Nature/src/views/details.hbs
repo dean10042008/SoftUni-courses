@@ -1,0 +1,35 @@
+<section id="details-info">
+    <h1>Details</h1>
+    <div class="image">
+        <img src="{{productData.image}}">
+    </div>
+
+    <div class="info">
+        <div class="text">
+            <h1 id="name">{{productData.name}}</h1>
+            <h3 id="location">{{productData.location}}</h3>
+            <p id="type">Type: {{productData.type}}</p>
+            <p id="year"><span>Year of the Event: {{productData.year}}</span></p>
+            <p id="interested">Interested: {{productData.recommendList.length}}</p>
+            <p id="description">{{productData.description}}</p>
+        </div>
+        {{#if isSignedIn}}
+            <div class="product-btn">
+                {{#if isOwner}}
+                    <div class="author">
+                        <a class="btn-edit" href="/catalog/{{productData._id}}/edit">Edit</a>
+                        <a class="btn-delete" href="/catalog/{{productData._id}}/delete">Delete</a>
+                    </div>
+
+                    {{else}}
+                        {{#if hasRecommended}}
+                            <p class="interested-message">You've already been interested in this event!</p>
+
+                            {{else}}
+                                <a class="btn-interested" href="/catalog/{{productData._id}}/recommend">Interested</a>
+                        {{/if}}
+                {{/if}}
+            </div>
+        {{/if}}
+    </div>
+</section>
